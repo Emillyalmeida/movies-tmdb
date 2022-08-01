@@ -1,6 +1,7 @@
 import theme from "../styles/theme";
 import { ReactNode } from "react";
-import { ThemeProvider } from "@material-ui/core";
+import { ChakraProvider } from "@chakra-ui/react";
+
 import TmdbProvider from "./context";
 
 interface AppProviderProp {
@@ -9,7 +10,7 @@ interface AppProviderProp {
 
 export const AppProvider = ({ children }: AppProviderProp) => (
   <TmdbProvider>
-    <ThemeProvider theme={theme}>{children}</ThemeProvider>
+    <ChakraProvider theme={theme}>{children}</ChakraProvider>
   </TmdbProvider>
 );
 
