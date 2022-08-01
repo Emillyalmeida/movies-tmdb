@@ -12,3 +12,5 @@ export const AppProvider = ({ children }: AppProviderProp) => (
     <ThemeProvider theme={theme}>{children}</ThemeProvider>
   </TmdbProvider>
 );
+
+export default AppProvider;
