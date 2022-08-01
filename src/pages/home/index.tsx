@@ -1,5 +1,12 @@
+import { VStack } from "@chakra-ui/react";
+import Header from "../../components/header";
+
 const Home = () => {
-  return <h1>Home</h1>;
+  return (
+    <VStack>
+      <Header />
+    </VStack>
+  );
 };
 
 export default Home;
