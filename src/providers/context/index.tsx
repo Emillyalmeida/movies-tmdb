@@ -1,25 +1,40 @@
 import { useCallback, createContext, useState, ReactNode } from "react";
 import api from "../../services/api";
 
-const TmdbContext = createContext({});
-
-interface TmdbProviderProps {
-  children: ReactNode;
-}
-
 interface list {
   list_id: number;
   name: string;
   description: string;
 }
 
+interface PropsContext {
+  load: boolean;
+  lists: list[];
+  SectionInital: () => void;
+  CreateLists: (nameList: string, description: string) => void;
+  GetList: (listId: number) => void;
+  AddMovieList: (movieId: number, listId: number) => void;
+  RemoveMovieList: (movieId: number, listId: number) => void;
+  GetTrending: () => void;
+  trend: any[];
+}
+
+export const TmdbContext = createContext<PropsContext>({} as PropsContext);
+
+interface TmdbProviderProps {
+  children: ReactNode;
+}
+
 const TmdbProvider = ({ children }: TmdbProviderProps) => {
-  const [lists, setLists] = useState<list[]>([]);
+  const [lists, setLists] = useState<list[] | []>([]);
   const [sessionId, setSectionId] = useState("");
+
+  const [load, setLoad] = useState(true);
+  const [trend, setTrend] = useState([]);
 
   const SectionInital = () => {
     api
-      .get(`authentication/token/new?api_key=${process.env.API_KEY!}`)
+      .get(`authentication/token/new?api_key=${process.env.REACT_APP_API_KEY!}`)
       .then((res) => {
         const section = { request_token: res.data.request_token };
         api
@@ -27,7 +42,8 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
           .then((res) => {
             api
               .post(
-                `authentication/session/new?api_key=${process.env.API_KEY!}`,
+                `authentication/session/new?api_key=${process.env
+                  .REACT_APP_API_KEY!}`,
                 section
               )
               .then((res) => {
@@ -55,7 +71,8 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
     };
     api
       .post(
-        `list?api_key=${process.env.API_KEY!}&session_id=${sessionId}`,
+        `list?api_key=${process.env
+          .REACT_APP_API_KEY!}&session_id=${sessionId}`,
         body
       )
       .then((res) => {
@@ -78,7 +95,10 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
     };
 
     api
-      .post(`list/${listId}/add_item?api_key=${process.env.API_KEY!}`, body)
+      .post(
+        `list/${listId}/add_item?api_key=${process.env.REACT_APP_API_KEY!}`,
+        body
+      )
       .then((res) => {
         console.log(res);
       })
@@ -89,7 +109,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
 
   const GetList = (listId: number) => {
     api
-      .get(`/list/${listId}?api_key=${process.env.API_KEY!}`)
+      .get(`/list/${listId}?api_key=${process.env.REACT_APP_API_KEY!}`)
       .then((res) => {
         return res.data;
       })
@@ -104,9 +124,30 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
     };
 
     api
-      .post(`list/${listId}/remove_item?api_key=${process.env.API_KEY!}`, body)
+      .post(
+        `list/${listId}/remove_item?api_key=${process.env.REACT_APP_API_KEY!}`,
+        body
+      )
       .then((res) => {
         console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const GetTrending = () => {
+    setLoad(true);
+    api
+      .get(
+        `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env
+          .REACT_APP_API_KEY!}&language=pt-BR`
+      )
+      .then((res) => {
+        console.log(res.data);
+        setTrend(res.data.results);
+        setLoad(false);
+        return;
       })
       .catch((err) => {
         console.log(err);
@@ -122,6 +163,9 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
         GetList,
         AddMovieList,
         RemoveMovieList,
+        GetTrending,
+        load,
+        trend,
       }}
     >
       {children}
