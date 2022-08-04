@@ -15,8 +15,10 @@ interface PropsContext {
   GetList: (listId: number) => void;
   AddMovieList: (movieId: number, listId: number) => void;
   RemoveMovieList: (movieId: number, listId: number) => void;
-  GetTrending: () => void;
+  AllListsHome: () => void;
   trend: any[];
+  movies: any[];
+  tvSeries: any[];
 }
 
 export const TmdbContext = createContext<PropsContext>({} as PropsContext);
@@ -31,6 +33,8 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
 
   const [load, setLoad] = useState(true);
   const [trend, setTrend] = useState([]);
+  const [movies, setMovies] = useState([]);
+  const [tvSeries, setTvSeries] = useState([]);
 
   const SectionInital = () => {
     api
@@ -147,8 +151,47 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
       });
   };
 
-  const GetTrending = () => {
+  const AllListsHome = () => {
     setLoad(true);
+    GetTrending();
+    PopularMovies();
+    PopularTvSeries();
+    setLoad(false);
+  };
+
+  const PopularMovies = () => {
+    api
+      .get(
+        `https://api.themoviedb.org/3/movie/popular?api_key=${process.env
+          .REACT_APP_API_KEY!}&language=pt-BR&page=1`
+      )
+      .then((res) => {
+        console.log(res.data);
+        setMovies(res.data.results);
+        return;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const PopularTvSeries = () => {
+    api
+      .get(
+        `https://api.themoviedb.org/3/tv/popular?api_key=${process.env
+          .REACT_APP_API_KEY!}&language=pt-BR&page=1`
+      )
+      .then((res) => {
+        console.log(res.data);
+        setTvSeries(res.data.results);
+        return;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const GetTrending = () => {
     api
       .get(
         `https://api.themoviedb.org/3/trending/all/day?api_key=${process.env
@@ -157,7 +200,6 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
       .then((res) => {
         console.log(res.data);
         setTrend(res.data.results);
-        setLoad(false);
         return;
       })
       .catch((err) => {
@@ -174,9 +216,11 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
         GetList,
         AddMovieList,
         RemoveMovieList,
-        GetTrending,
+        AllListsHome,
         load,
         trend,
+        movies,
+        tvSeries,
       }}
     >
       {children}
