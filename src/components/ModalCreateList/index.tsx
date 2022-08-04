@@ -11,6 +11,7 @@ import {
   ModalFooter,
   Button,
   Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 
@@ -23,8 +24,23 @@ const ModalCreate = ({ isOpen, onClose }: Props) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
+  const toast = useToast();
+
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+
+  const handleCreateList = () => {
+    if (!name || !description) {
+      toast({
+        title: `Preencha todos os campos`,
+        status: "error",
+        position: "top-left",
+        isClosable: true,
+      });
+
+      return;
+    }
+  };
   return (
     <>
       <Modal
@@ -47,6 +63,7 @@ const ModalCreate = ({ isOpen, onClose }: Props) => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Digite o nome da lista"
+                borderColor="yellow.800"
               />
             </FormControl>
 
@@ -56,6 +73,7 @@ const ModalCreate = ({ isOpen, onClose }: Props) => {
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Escreva um a descrição para a Lista"
+                borderColor="yellow.800"
               />
             </FormControl>
           </ModalBody>
@@ -66,6 +84,7 @@ const ModalCreate = ({ isOpen, onClose }: Props) => {
               color="white"
               mr={3}
               _hover={{ bg: "gray.300", color: "yellow.800" }}
+              onClick={() => handleCreateList()}
             >
               Criar
             </Button>
