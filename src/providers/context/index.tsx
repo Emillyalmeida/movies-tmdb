@@ -37,9 +37,19 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
       .get(`authentication/token/new?api_key=${process.env.REACT_APP_API_KEY!}`)
       .then((res) => {
         const section = { request_token: res.data.request_token };
+        console.log(section);
         api
-          .get(`authenticate/${section.request_token}`)
+          .post(
+            `authentication/token/validate_with_login?api_key=${process.env
+              .REACT_APP_API_KEY!}`,
+            {
+              username: `${process.env.REACT_APP_USER_NAME}`,
+              password: `${process.env.REACT_APP_PASSWORD}`,
+              request_token: `${section.request_token}`,
+            }
+          )
           .then((res) => {
+            console.log(res.data);
             api
               .post(
                 `authentication/session/new?api_key=${process.env
@@ -47,6 +57,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
                 section
               )
               .then((res) => {
+                console.log(res.data);
                 setSectionId(res.data.session_id);
               })
               .catch((err) => {
@@ -54,7 +65,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
               });
           })
           .catch((err) => {
-            console.log(err, "error stp 2");
+            console.log(err.response, "error stp 2");
           });
       })
       .catch((err) => {
@@ -109,7 +120,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
 
   const GetList = (listId: number) => {
     api
-      .get(`/list/${listId}?api_key=${process.env.REACT_APP_API_KEY!}`)
+      .get(`list/${listId}?api_key=${process.env.REACT_APP_API_KEY!}`)
       .then((res) => {
         return res.data;
       })
