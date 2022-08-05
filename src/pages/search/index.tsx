@@ -1,22 +1,26 @@
 import {
-  Button,
+  Center,
   Flex,
   Grid,
   Heading,
+  Icon,
   IconButton,
   Input,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 
 import Header from "../../components/header";
 
-import { useParams, useHistory } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { TmdbContext } from "../../providers/context";
 import Card from "../../components/Card";
 import { SearchIcon } from "@chakra-ui/icons";
+import SkeletonCard from "../../components/skeleton";
+import { MdError } from "react-icons/md";
 
 interface typeParams {
   query: string;
@@ -24,7 +28,6 @@ interface typeParams {
 
 const Search = () => {
   const { query } = useParams<typeParams>();
-  const history = useHistory();
 
   const { SearchItem, resultSearch } = useContext(TmdbContext);
 
@@ -90,20 +93,42 @@ const Search = () => {
           />
         </Flex>
       </Flex>
-      <Grid
-        w="100%"
-        templateColumns="repeat(auto-fill, minmax(200px,220px))"
-        justifyContent="center"
-        gap={10}
-        p="8"
-        mt="4"
-      >
-        {loading ? (
-          <Heading>Carregando...</Heading>
-        ) : (
-          resultSearch.map((item) => <Card key={item.id} item={item} />)
-        )}
-      </Grid>
+      {resultSearch.length < 1 ? (
+        <Center pt={8}>
+          <VStack
+            alignItems="center"
+            spacing={4}
+            alignSelf="center"
+            w={["90%", "75%", "50%"]}
+          >
+            <Icon as={MdError} color="red.500" fontSize="60px" />
+            <Heading size="lg" textAlign="center">
+              Nenhum resultado encontado para : "{Query}"
+            </Heading>
+            <Text textAlign="center">Verifique e pesquise novamente</Text>
+          </VStack>
+        </Center>
+      ) : (
+        <Grid
+          w="100%"
+          templateColumns="repeat(auto-fill, minmax(200px,220px))"
+          justifyContent="center"
+          alignItems="center"
+          gap={10}
+          p="8"
+          mt="4"
+        >
+          {loading ? (
+            <>
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((key) => (
+                <SkeletonCard key={key} />
+              ))}
+            </>
+          ) : (
+            resultSearch.map((item) => <Card key={item.id} item={item} />)
+          )}
+        </Grid>
+      )}
     </Flex>
   );
 };
