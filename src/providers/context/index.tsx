@@ -1,3 +1,4 @@
+import { useToast } from "@chakra-ui/react";
 import { useCallback, createContext, useState, ReactNode } from "react";
 import api from "../../services/api";
 
@@ -21,6 +22,8 @@ interface PropsContext {
   tvSeries: any[];
   SearchItem: (query: string) => void;
   resultSearch: any[];
+  getSession: boolean;
+  infoList: any;
 }
 
 export const TmdbContext = createContext<PropsContext>({} as PropsContext);
@@ -38,6 +41,11 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
   const [movies, setMovies] = useState([]);
   const [tvSeries, setTvSeries] = useState([]);
   const [resultSearch, setResult] = useState([]);
+  const [infoList, setInfoList] = useState({});
+
+  const [getSession, setGeatSession] = useState(false);
+
+  const toast = useToast();
 
   const SectionInital = () => {
     api
@@ -66,6 +74,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
               .then((res) => {
                 console.log(res.data);
                 setSectionId(res.data.session_id);
+                setGeatSession(true);
               })
               .catch((err) => {
                 console.log(err, "error stp 3");
@@ -101,9 +110,21 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
           description: description,
         };
         setLists([...lists, InfoList]);
+        toast({
+          title: `Lista ${nameList} criada`,
+          status: "success",
+          position: "top-left",
+          isClosable: true,
+        });
       })
       .catch((err) => {
         console.log(err);
+        toast({
+          title: `Erro ao criar a list`,
+          status: "error",
+          position: "top-left",
+          isClosable: true,
+        });
       });
   };
 
@@ -129,6 +150,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
     api
       .get(`list/${listId}?api_key=${process.env.REACT_APP_API_KEY!}`)
       .then((res) => {
+        setInfoList(res.data);
         return res.data;
       })
       .catch((err) => {
@@ -245,6 +267,8 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
         tvSeries,
         SearchItem,
         resultSearch,
+        getSession,
+        infoList,
       }}
     >
       {children}
