@@ -1,16 +1,22 @@
 import { Heading, HStack, VStack } from "@chakra-ui/react";
+import { IconType } from "react-icons/lib/cjs/iconBase";
 import Card from "../Card";
 
 interface Props {
   load: boolean;
   title: string;
   trend: any[];
+  icon: IconType;
 }
 
-const SectionHome = ({ load, title, trend }: Props) => {
+const SectionHome = ({ load, title, trend, icon: Icon }: Props) => {
   return (
     <VStack mt={4} alignItems="self-start" p={8} w="100%">
-      <Heading size="lg">{title}</Heading>
+      <HStack spacing={3}>
+        <Icon size="32px" />
+        <Heading size="lg">{title}</Heading>
+      </HStack>
+
       {load ? (
         <Heading>Carregando</Heading>
       ) : (
