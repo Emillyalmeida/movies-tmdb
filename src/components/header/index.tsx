@@ -16,6 +16,7 @@ import { useContext } from "react";
 import { TmdbContext } from "../../providers/context";
 
 import ModalCreate from "../ModalCreateList";
+import { useHistory } from "react-router-dom";
 
 const Header = () => {
   const { lists } = useContext(TmdbContext);
@@ -26,6 +27,8 @@ const Header = () => {
     onOpen: onOpenModal,
     onClose: onCloseModal,
   } = useDisclosure();
+
+  const history = useHistory();
 
   return (
     <>
@@ -43,6 +46,8 @@ const Header = () => {
           size="2xl"
           bgGradient="linear(to-t, #fff350, #ffea44, #ffe139, #ffd72c, #ffce1f, #fac618, #f6bd0f, #f1b505, #e6ac04, #dca302, #d19a01, #c79100);"
           fontWeight="700"
+          onClick={() => history.push("/")}
+          cursor="pointer"
         >
           TMDB
         </Heading>
@@ -64,7 +69,7 @@ const Header = () => {
               _focus={{ boxShadow: "outline" }}
               onClick={onOpen}
             >
-              Actions
+              Listas
             </MenuButton>
             {isOpen ? (
               <MenuList>
@@ -79,8 +84,14 @@ const Header = () => {
 
                 <MenuDivider />
                 <MenuGroup title="Minhas listas">
-                  <MenuItem>My Account</MenuItem>
-                  <MenuItem>Payments </MenuItem>
+                  {lists.map((list) => (
+                    <MenuItem
+                      key={list.list_id}
+                      onClick={() => history.push(`/lists/${list.list_id}`)}
+                    >
+                      {list.name}
+                    </MenuItem>
+                  ))}
                 </MenuGroup>
               </MenuList>
             ) : (
