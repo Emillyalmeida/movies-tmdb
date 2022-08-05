@@ -1,10 +1,12 @@
-import { Flex, Grid, Heading, Text, VStack } from "@chakra-ui/react";
+import { AddIcon } from "@chakra-ui/icons";
+import { Button, Flex, Grid, Heading, Text, VStack } from "@chakra-ui/react";
 
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import Card from "../../components/Card";
 
 import Header from "../../components/header";
+import SkeletonCard from "../../components/skeleton";
 import { TmdbContext } from "../../providers/context";
 
 interface typeParams {
@@ -13,6 +15,7 @@ interface typeParams {
 
 const PageList = () => {
   const { id } = useParams<typeParams>();
+  const history = useHistory();
 
   const { GetList, infoList } = useContext(TmdbContext);
 
@@ -35,17 +38,29 @@ const PageList = () => {
         w="100%"
         p={6}
         color="white"
-        gap={2}
+        gap={4}
         py={8}
         h="250px"
         justifyContent="center"
         bg="yellow.800"
       >
-        <Heading size="2xl">{infoList.name}</Heading>
+        <Flex justifyContent="space-between">
+          <Heading size="2xl">Lista: {infoList.name}</Heading>
+          <Button
+            rightIcon={<AddIcon />}
+            color="gray.700"
+            borderColor="gray.700"
+            variant="outline"
+            _hover={{ bg: "gray.100" }}
+            onClick={() => history.push("/")}
+          >
+            Adicionar Itens
+          </Button>
+        </Flex>
 
-        <VStack>
-          <Text fontSize="xl">Sobre a lista </Text>
-          <Text> {infoList.description}</Text>
+        <VStack alignItems="flex-start" spacing={2}>
+          <Text fontSize="xl">Sobre a lista :</Text>
+          <Text> descrição:{infoList.description}</Text>
         </VStack>
       </Flex>
 
@@ -58,10 +73,14 @@ const PageList = () => {
         mt="4"
       >
         {loading ? (
-          <Heading>Carregando...</Heading>
-        ) : infoList.items.length > 0 ? (
+          <>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((key) => (
+              <SkeletonCard key={key} />
+            ))}
+          </>
+        ) : infoList.item_count > 0 ? (
           infoList.items.map((item: { id: any }) => (
-            <Card list key={item.id} item={item} />
+            <Card list={id} key={item.id} item={item} />
           ))
         ) : (
           <Heading>Vazio</Heading>

@@ -1,5 +1,6 @@
 import { Switch, Route } from "react-router-dom";
 import Home from "../pages/home";
+import PageList from "../pages/lists";
 import Search from "../pages/search";
 
 const Routes = () => {
@@ -11,7 +12,9 @@ const Routes = () => {
       <Route exact path="/search/:query">
         <Search />
       </Route>
-      <Route exact path="/list/:id"></Route>
+      <Route exact path="/lists/:id">
+        <PageList />
+      </Route>
     </Switch>
   );
 };
