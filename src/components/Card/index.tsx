@@ -1,7 +1,6 @@
-import { FaList, FaRegHeart } from "react-icons/fa";
+import { FaList, FaRegHeart, FaTrashAlt } from "react-icons/fa";
 import {
   Box,
-  Heading,
   Text,
   Image,
   Flex,
@@ -9,11 +8,30 @@ import {
   VStack,
   CircularProgressLabel,
   IconButton,
+  Menu,
+  MenuButton,
+  Button,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  MenuGroup,
 } from "@chakra-ui/react";
 
-const Card = ({ item }: any) => {
+import { useContext } from "react";
+import { TmdbContext } from "../../providers/context";
+import { AddIcon } from "@chakra-ui/icons";
+
+interface props {
+  item: any;
+  list?: boolean;
+}
+
+const Card = ({ item, list }: props) => {
+  const { lists } = useContext(TmdbContext);
+
   return (
     <Box
+      w="200px"
       boxShadow="base"
       bg="white"
       minH="400px"
@@ -52,18 +70,55 @@ const Card = ({ item }: any) => {
         </CircularProgress>
       </VStack>
       <Flex justifyContent="center" gap={3}>
-        <IconButton
-          variant="ghost"
-          color="yellow.700"
-          aria-label="Send email"
-          icon={<FaList />}
-          fontSize="20px"
-          _hover={{
-            borderWidth: "1px",
-            rounded: "md",
-            borderColor: "yellow.700",
-          }}
-        />
+        {list ? (
+          <IconButton
+            variant="ghost"
+            color="yellow.700"
+            aria-label="remover"
+            icon={<FaTrashAlt />}
+            fontSize="20px"
+            _hover={{
+              borderWidth: "1px",
+              rounded: "md",
+              borderColor: "yellow.700",
+            }}
+          />
+        ) : (
+          <Menu>
+            <MenuButton
+              as={IconButton}
+              aria-label="Options"
+              icon={<FaList />}
+              variant="ghost"
+              color="yellow.700"
+              fontSize="20px"
+              _hover={{
+                borderWidth: "1px",
+                rounded: "md",
+                borderColor: "yellow.700",
+              }}
+            />
+            <MenuList>
+              <MenuItem icon={<AddIcon />} as={Button} aria-label="Lists">
+                Criar Lista
+              </MenuItem>
+
+              {lists.length > 0 ? (
+                <>
+                  <MenuDivider />
+                  <MenuGroup title="Minhas listas">
+                    {lists.map((list) => (
+                      <MenuItem key={list.list_id}>{list.name}</MenuItem>
+                    ))}
+                  </MenuGroup>
+                </>
+              ) : (
+                <></>
+              )}
+            </MenuList>
+          </Menu>
+        )}
+
         <IconButton
           variant="ghost"
           color="yellow.700"
