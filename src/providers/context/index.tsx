@@ -19,6 +19,8 @@ interface PropsContext {
   trend: any[];
   movies: any[];
   tvSeries: any[];
+  SearchItem: (query: string) => void;
+  resultSearch: any[];
 }
 
 export const TmdbContext = createContext<PropsContext>({} as PropsContext);
@@ -35,6 +37,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
   const [trend, setTrend] = useState([]);
   const [movies, setMovies] = useState([]);
   const [tvSeries, setTvSeries] = useState([]);
+  const [resultSearch, setResult] = useState([]);
 
   const SectionInital = () => {
     api
@@ -207,6 +210,25 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
       });
   };
 
+  const SearchItem = (query: string) => {
+    api
+      .get(
+        `search/multi?api_key=${process.env
+          .REACT_APP_API_KEY!}&language=pt-BR&query=${query}&page=1&include_adult=false`
+      )
+      .then((res) => {
+        console.log(res.data.results);
+        const removePerson = res.data.results.filter(
+          (item: { media_type: string }) => item.media_type !== "person"
+        );
+        setResult(removePerson);
+        return res.data.results;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <TmdbContext.Provider
       value={{
@@ -221,6 +243,8 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
         trend,
         movies,
         tvSeries,
+        SearchItem,
+        resultSearch,
       }}
     >
       {children}
