@@ -13,7 +13,8 @@ import {
   Textarea,
   useToast,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { TmdbContext } from "../../providers/context";
 
 interface Props {
   isOpen: boolean;
@@ -29,6 +30,8 @@ const ModalCreate = ({ isOpen, onClose }: Props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
+  const { CreateLists } = useContext(TmdbContext);
+
   const handleCreateList = () => {
     if (!name || !description) {
       toast({
@@ -40,6 +43,9 @@ const ModalCreate = ({ isOpen, onClose }: Props) => {
 
       return;
     }
+
+    CreateLists(name, description);
+    onClose();
   };
   return (
     <>
