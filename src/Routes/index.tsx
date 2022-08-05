@@ -11,6 +11,7 @@ const Routes = () => {
       <Route exact path="/search/:query">
         <Search />
       </Route>
+      <Route exact path="/list/:id"></Route>
     </Switch>
   );
 };
