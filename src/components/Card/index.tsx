@@ -15,67 +15,131 @@ import {
   MenuItem,
   MenuDivider,
   MenuGroup,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { useContext } from "react";
 import { TmdbContext } from "../../providers/context";
 import { AddIcon } from "@chakra-ui/icons";
+import ModalCreate from "../ModalCreateList";
 
 interface props {
   item: any;
-  list?: boolean;
+  list?: string;
 }
 
 const Card = ({ item, list }: props) => {
-  const { lists } = useContext(TmdbContext);
+  const { lists, AddMovieList, RemoveMovieList } = useContext(TmdbContext);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Box
-      w="200px"
-      boxShadow="base"
-      bg="white"
-      minH="400px"
-      display="flex"
-      flexDir="column"
-      justifyContent="space-between"
-      pos="relative"
-      pb={2}
-      rounded="lg"
-      _hover={{ transform: "translateY(-10px)", borderColor: "gray.100" }}
-      cursor="pointer"
-    >
-      <Image
-        src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
-        alt={item.title}
-        minW="200px"
+    <>
+      <ModalCreate isOpen={isOpen} onClose={onClose} />
+      <Box
+        w="200px"
+        boxShadow="base"
+        bg="white"
+        minH="400px"
+        display="flex"
+        flexDir="column"
+        justifyContent="space-between"
+        pos="relative"
+        pb={2}
         rounded="lg"
-      />
-      <VStack>
-        <Text fontWeight="bold" textAlign="center">
-          {item.title ? item.title : item.original_name}
-        </Text>
-        <CircularProgress
-          rounded="full"
-          top="-5px"
-          right="5px"
-          position="absolute"
-          bg="white"
-          size="40px"
-          value={Math.ceil(item.vote_average * 10)}
-          color="green.500"
-        >
-          <CircularProgressLabel>{`${Math.ceil(
-            item.vote_average * 10
-          )}%`}</CircularProgressLabel>
-        </CircularProgress>
-      </VStack>
-      <Flex justifyContent="center" gap={3}>
-        {list ? (
+        _hover={{ transform: "translateY(-10px)", borderColor: "gray.100" }}
+        cursor="pointer"
+      >
+        <Image
+          src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
+          alt={item.title}
+          minW="200px"
+          rounded="lg"
+        />
+        <VStack>
+          <Text fontWeight="bold" textAlign="center">
+            {item.title ? item.title : item.original_name}
+          </Text>
+          <CircularProgress
+            rounded="full"
+            top="-5px"
+            right="5px"
+            position="absolute"
+            bg="white"
+            size="40px"
+            value={Math.ceil(item.vote_average * 10)}
+            color="green.500"
+          >
+            <CircularProgressLabel>{`${Math.ceil(
+              item.vote_average * 10
+            )}%`}</CircularProgressLabel>
+          </CircularProgress>
+        </VStack>
+        <Flex justifyContent="center" gap={3}>
+          {list ? (
+            <IconButton
+              variant="ghost"
+              color="yellow.700"
+              aria-label="remover"
+              icon={<FaTrashAlt />}
+              fontSize="20px"
+              _hover={{
+                borderWidth: "1px",
+                rounded: "md",
+                borderColor: "yellow.700",
+              }}
+              onClick={() => RemoveMovieList(item.id, Number(list))}
+            />
+          ) : (
+            <Menu>
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<FaList />}
+                variant="ghost"
+                color="yellow.700"
+                fontSize="20px"
+                _hover={{
+                  borderWidth: "1px",
+                  rounded: "md",
+                  borderColor: "yellow.700",
+                }}
+              />
+              <MenuList>
+                <MenuItem
+                  icon={<AddIcon />}
+                  as={Button}
+                  aria-label="Lists"
+                  onClick={() => onOpen()}
+                >
+                  Criar Lista
+                </MenuItem>
+
+                {lists.length > 0 ? (
+                  <>
+                    <MenuDivider />
+                    <MenuGroup title="Adicionar a uma lista">
+                      {lists.map((list) => (
+                        <MenuItem
+                          key={list.list_id}
+                          onClick={() => AddMovieList(item.id, list.list_id)}
+                        >
+                          {list.name}
+                        </MenuItem>
+                      ))}
+                    </MenuGroup>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </MenuList>
+            </Menu>
+          )}
+
           <IconButton
             variant="ghost"
             color="yellow.700"
-            aria-label="remover"
-            icon={<FaTrashAlt />}
+            aria-label="Send email"
+            icon={<FaRegHeart />}
             fontSize="20px"
             _hover={{
               borderWidth: "1px",
@@ -83,56 +147,9 @@ const Card = ({ item, list }: props) => {
               borderColor: "yellow.700",
             }}
           />
-        ) : (
-          <Menu>
-            <MenuButton
-              as={IconButton}
-              aria-label="Options"
-              icon={<FaList />}
-              variant="ghost"
-              color="yellow.700"
-              fontSize="20px"
-              _hover={{
-                borderWidth: "1px",
-                rounded: "md",
-                borderColor: "yellow.700",
-              }}
-            />
-            <MenuList>
-              <MenuItem icon={<AddIcon />} as={Button} aria-label="Lists">
-                Criar Lista
-              </MenuItem>
-
-              {lists.length > 0 ? (
-                <>
-                  <MenuDivider />
-                  <MenuGroup title="Minhas listas">
-                    {lists.map((list) => (
-                      <MenuItem key={list.list_id}>{list.name}</MenuItem>
-                    ))}
-                  </MenuGroup>
-                </>
-              ) : (
-                <></>
-              )}
-            </MenuList>
-          </Menu>
-        )}
-
-        <IconButton
-          variant="ghost"
-          color="yellow.700"
-          aria-label="Send email"
-          icon={<FaRegHeart />}
-          fontSize="20px"
-          _hover={{
-            borderWidth: "1px",
-            rounded: "md",
-            borderColor: "yellow.700",
-          }}
-        />
-      </Flex>
-    </Box>
+        </Flex>
+      </Box>
+    </>
   );
 };
 
