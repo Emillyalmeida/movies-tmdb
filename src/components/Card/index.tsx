@@ -1,4 +1,4 @@
-import { FaList, FaRegHeart, FaTrashAlt } from "react-icons/fa";
+import { FaHeart, FaList, FaRegHeart, FaTrashAlt } from "react-icons/fa";
 import {
   Box,
   Text,
@@ -29,7 +29,14 @@ interface props {
 }
 
 const Card = ({ item, list }: props) => {
-  const { lists, AddMovieList, RemoveMovieList } = useContext(TmdbContext);
+  const {
+    lists,
+    AddMovieList,
+    RemoveMovieList,
+    isFavorites,
+    AddFavorites,
+    RemoveFavorites,
+  } = useContext(TmdbContext);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -139,13 +146,18 @@ const Card = ({ item, list }: props) => {
             variant="ghost"
             color="yellow.700"
             aria-label="Send email"
-            icon={<FaRegHeart />}
+            icon={isFavorites(item.id) ? <FaHeart /> : <FaRegHeart />}
             fontSize="20px"
             _hover={{
               borderWidth: "1px",
               rounded: "md",
               borderColor: "yellow.700",
             }}
+            onClick={() =>
+              isFavorites(item.id)
+                ? RemoveFavorites(item.id)
+                : AddFavorites(item.id, item)
+            }
           />
         </Flex>
       </Box>
