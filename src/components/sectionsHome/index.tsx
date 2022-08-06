@@ -1,6 +1,7 @@
 import { Heading, HStack, VStack } from "@chakra-ui/react";
 import { IconType } from "react-icons/lib/cjs/iconBase";
 import Card from "../Card";
+import SkeletonCard from "../skeleton";
 
 interface Props {
   load: boolean;
@@ -18,7 +19,13 @@ const SectionHome = ({ load, title, trend, icon: Icon }: Props) => {
       </HStack>
 
       {load ? (
-        <Heading>Carregando</Heading>
+        <>
+          <HStack w="100%" overflowX="scroll" spacing={4} py={6}>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((key) => (
+              <SkeletonCard key={key} />
+            ))}
+          </HStack>
+        </>
       ) : (
         <HStack w="100%" overflowX="scroll" spacing={4} py={6}>
           {trend.map((item) => (
