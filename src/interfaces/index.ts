@@ -36,4 +36,7 @@ export interface PropsContext {
   resultSearch: ItemI[];
   getSession: boolean;
   infoList: ListDetails;
+  isFavorites: (id: number) => boolean;
+  AddFavorites: (id: number, item: ItemI) => void;
+  RemoveFavorites: (id: number) => void;
 }

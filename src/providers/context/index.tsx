@@ -21,6 +21,8 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
   const [resultSearch, setResult] = useState<ItemI[] | []>([]);
   const [infoList, setInfoList] = useState<ListDetails>({} as ListDetails);
 
+  const [favorites, setFavorites] = useState<ItemI[]>([]);
+
   const [getSession, setGeatSession] = useState(false);
 
   const toast = useToast();
@@ -251,6 +253,36 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
       });
   };
 
+  const isFavorites = (id: number) => {
+    const isFav = favorites.some((item) => item.id === id);
+    return isFav;
+  };
+
+  const AddFavorites = (id: number, item: ItemI) => {
+    const isExist = isFavorites(id);
+
+    if (!isExist) {
+      setFavorites([...favorites, item]);
+      toast({
+        title: `Item adicionado aos Favoritos`,
+        status: "success",
+        position: "top-left",
+        isClosable: true,
+      });
+    }
+  };
+
+  const RemoveFavorites = (id: number) => {
+    const filter = favorites.filter((item) => item.id !== id);
+    setFavorites(filter);
+    toast({
+      title: `Removido dos Favoritos`,
+      status: "error",
+      position: "top-left",
+      isClosable: true,
+    });
+  };
+
   return (
     <TmdbContext.Provider
       value={{
@@ -269,6 +301,9 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
         resultSearch,
         getSession,
         infoList,
+        isFavorites,
+        AddFavorites,
+        RemoveFavorites,
       }}
     >
       {children}
