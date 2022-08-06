@@ -37,6 +37,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
   const [sessionId, setSectionId] = useState("");
 
   const [load, setLoad] = useState(true);
+
   const [trend, setTrend] = useState([]);
   const [movies, setMovies] = useState([]);
   const [tvSeries, setTvSeries] = useState([]);
@@ -64,7 +65,6 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
             }
           )
           .then((res) => {
-            console.log(res.data);
             api
               .post(
                 `authentication/session/new?api_key=${process.env
@@ -72,20 +72,18 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
                 section
               )
               .then((res) => {
-                console.log(res.data);
                 setSectionId(res.data.session_id);
                 setGeatSession(true);
               })
               .catch((err) => {
-                console.log(err, "error stp 3");
+                console.log("error stp 3");
               });
           })
           .catch((err) => {
-            console.log(err.response, "error stp 2");
+            console.log("error stp 2");
           });
       })
       .catch((err) => {
-        console.log(err);
         console.log("erro no requestToken");
       });
   };
@@ -103,7 +101,6 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
         body
       )
       .then((res) => {
-        console.log(res);
         const InfoList = {
           list_id: res.data.list_id,
           name: nameList,
@@ -118,7 +115,6 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
         });
       })
       .catch((err) => {
-        console.log(err);
         toast({
           title: `Erro ao criar a list`,
           status: "error",
@@ -135,28 +131,41 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
 
     api
       .post(
-        `list/${listId}/add_item?api_key=${process.env.REACT_APP_API_KEY!}`,
+        `list/${listId}/add_item?api_key=${process.env
+          .REACT_APP_API_KEY!}&session_id=${sessionId}&language=en-US`,
         body
       )
       .then((res) => {
         console.log(res);
+        toast({
+          title: `Item adicionado a lista`,
+          status: "success",
+          position: "top-left",
+          isClosable: true,
+        });
       })
       .catch((err) => {
         console.log(err);
+        toast({
+          title: `Item já adicionado a lista`,
+          status: "error",
+          position: "top-left",
+          isClosable: true,
+        });
       });
   };
-
-  const GetList = (listId: number) => {
+  const GetList = useCallback((listId: number) => {
     api
       .get(`list/${listId}?api_key=${process.env.REACT_APP_API_KEY!}`)
       .then((res) => {
+        console.log(res.data);
         setInfoList(res.data);
         return res.data;
       })
       .catch((err) => {
         console.log(err);
       });
-  };
+  }, []);
 
   const RemoveMovieList = (movieId: number, listId: number) => {
     const body = {
@@ -165,14 +174,28 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
 
     api
       .post(
-        `list/${listId}/remove_item?api_key=${process.env.REACT_APP_API_KEY!}`,
+        `list/${listId}/remove_item?api_key=${process.env
+          .REACT_APP_API_KEY!}&session_id=${sessionId}&language=pt-BR`,
         body
       )
       .then((res) => {
         console.log(res);
+        toast({
+          title: `Item removido da lista`,
+          status: "success",
+          position: "top-left",
+          isClosable: true,
+        });
+        GetList(listId);
       })
       .catch((err) => {
         console.log(err);
+        toast({
+          title: `Erro ao remover da list`,
+          status: "error",
+          position: "top-left",
+          isClosable: true,
+        });
       });
   };
 

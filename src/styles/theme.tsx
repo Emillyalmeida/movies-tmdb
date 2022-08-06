@@ -25,7 +25,7 @@ export const theme = extendTheme({
     xs: "0.8rem",
     sm: "0.9rem",
     md: "1.0rem",
-    tg: "1.1rem",
+    lg: "1.1rem",
     xl: "1.3rem",
     "2xl": "1.5rem",
     "3xl": "1.8rem",
