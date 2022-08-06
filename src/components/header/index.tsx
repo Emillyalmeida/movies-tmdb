@@ -43,7 +43,7 @@ const Header = () => {
       >
         <Heading
           ml="3"
-          size="2xl"
+          size="3xl"
           bgGradient="linear(to-t, #fff350, #ffea44, #ffe139, #ffd72c, #ffce1f, #fac618, #f6bd0f, #f1b505, #e6ac04, #dca302, #d19a01, #c79100);"
           fontWeight="700"
           onClick={() => history.push("/")}
