@@ -1,30 +1,7 @@
 import { useToast } from "@chakra-ui/react";
 import { useCallback, createContext, useState, ReactNode } from "react";
+import { list, PropsContext, ItemI, ListDetails } from "../../interfaces";
 import api from "../../services/api";
-
-interface list {
-  list_id: number;
-  name: string;
-  description: string;
-}
-
-interface PropsContext {
-  load: boolean;
-  lists: list[];
-  SectionInital: () => void;
-  CreateLists: (nameList: string, description: string) => void;
-  GetList: (listId: number) => void;
-  AddMovieList: (movieId: number, listId: number) => void;
-  RemoveMovieList: (movieId: number, listId: number) => void;
-  AllListsHome: () => void;
-  trend: any[];
-  movies: any[];
-  tvSeries: any[];
-  SearchItem: (query: string) => void;
-  resultSearch: any[];
-  getSession: boolean;
-  infoList: any;
-}
 
 export const TmdbContext = createContext<PropsContext>({} as PropsContext);
 
@@ -38,11 +15,11 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
 
   const [load, setLoad] = useState(true);
 
-  const [trend, setTrend] = useState([]);
-  const [movies, setMovies] = useState([]);
-  const [tvSeries, setTvSeries] = useState([]);
-  const [resultSearch, setResult] = useState([]);
-  const [infoList, setInfoList] = useState({});
+  const [trend, setTrend] = useState<ItemI[] | []>([]);
+  const [movies, setMovies] = useState<ItemI[] | []>([]);
+  const [tvSeries, setTvSeries] = useState<ItemI[] | []>([]);
+  const [resultSearch, setResult] = useState<ItemI[] | []>([]);
+  const [infoList, setInfoList] = useState<ListDetails>({} as ListDetails);
 
   const [getSession, setGeatSession] = useState(false);
 
