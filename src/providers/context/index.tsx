@@ -237,7 +237,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
   const SearchItem = (query: string) => {
     api
       .get(
-        `search/multi?api_key=${process.env
+        `search/movie?api_key=${process.env
           .REACT_APP_API_KEY!}&language=pt-BR&query=${query}&page=1&include_adult=false`
       )
       .then((res) => {

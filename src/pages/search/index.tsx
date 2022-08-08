@@ -75,7 +75,7 @@ const Search = () => {
             bg="white"
             variant="filled"
             borderRadius="full"
-            placeholder="Busque um filme ou serie"
+            placeholder="Busque por um filme"
             color="gray.700"
             {...register("search")}
           />

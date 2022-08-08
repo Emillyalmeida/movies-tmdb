@@ -1,4 +1,5 @@
 import { Button, Flex, Heading, Input, Text, VStack } from "@chakra-ui/react";
+import { useToast } from "@chakra-ui/react";
 
 import { useContext, useEffect, useState } from "react";
 
@@ -25,6 +26,21 @@ const Home = () => {
   const history = useHistory();
 
   const [seach, setSearch] = useState("");
+
+  const toast = useToast();
+
+  const handleSeach = () => {
+    if (seach) {
+      history.push(`search/${seach}`);
+    } else {
+      toast({
+        title: `A pesquisa não pode ser vazia`,
+        status: "error",
+        position: "top-left",
+        isClosable: true,
+      });
+    }
+  };
 
   useEffect(() => {
     if (!getSession) {
@@ -56,9 +72,10 @@ const Home = () => {
             bg="white"
             variant="filled"
             borderRadius="full"
-            placeholder="Busque um filme ou serie"
+            placeholder="Busque por um filme"
             color="gray.700"
             value={seach}
+            _focus={{ bg: "white" }}
             onChange={(e) => setSearch(e.target.value)}
           />
           <Button
@@ -67,7 +84,7 @@ const Home = () => {
             color="gray.600"
             paddingX={5}
             _hover={{ color: "white" }}
-            onClick={() => history.push(`search/${seach}`)}
+            onClick={() => handleSeach()}
           >
             Pesquisar
           </Button>
