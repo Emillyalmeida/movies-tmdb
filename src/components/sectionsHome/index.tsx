@@ -12,7 +12,7 @@ interface Props {
 
 const SectionHome = ({ load, title, trend, icon: Icon }: Props) => {
   return (
-    <VStack mt={4} alignItems="self-start" p={8} w="100%">
+    <VStack mt={4} alignItems="self-start" p={8} w="100%" minH="400px">
       <HStack spacing={3}>
         <Icon size="32px" />
         <Heading size="lg">{title}</Heading>

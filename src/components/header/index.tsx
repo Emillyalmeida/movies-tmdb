@@ -33,6 +33,7 @@ const Header = () => {
   return (
     <>
       <ModalCreate isOpen={isOpenModal} onClose={onCloseModal} />
+
       <HStack
         w="full"
         bg="gray.800"
@@ -71,32 +72,29 @@ const Header = () => {
             >
               Listas
             </MenuButton>
-            {isOpen ? (
-              <MenuList>
-                <MenuItem
-                  icon={<AddIcon />}
-                  as={Button}
-                  aria-label="Lists"
-                  onClick={onClose}
-                >
-                  Criar Lista
-                </MenuItem>
 
-                <MenuDivider />
-                <MenuGroup title="Minhas listas">
-                  {lists.map((list) => (
-                    <MenuItem
-                      key={list.list_id}
-                      onClick={() => history.push(`/lists/${list.list_id}`)}
-                    >
-                      {list.name}
-                    </MenuItem>
-                  ))}
-                </MenuGroup>
-              </MenuList>
-            ) : (
-              <></>
-            )}
+            <MenuList>
+              <MenuItem
+                icon={<AddIcon />}
+                as={Button}
+                aria-label="Lists"
+                onClick={onClose}
+              >
+                Criar Lista
+              </MenuItem>
+
+              <MenuDivider />
+              <MenuGroup title="Minhas listas">
+                {lists.map((list) => (
+                  <MenuItem
+                    key={list.list_id}
+                    onClick={() => history.push(`/lists/${list.list_id}`)}
+                  >
+                    {list.name}
+                  </MenuItem>
+                ))}
+              </MenuGroup>
+            </MenuList>
           </Menu>
         ) : (
           <Button
