@@ -6,7 +6,7 @@ import Header from "../../components/header";
 import SectionHome from "../../components/sectionsHome";
 
 import { FiTrendingUp } from "react-icons/fi";
-import { MdLocalMovies, MdMovie } from "react-icons/md";
+import { MdLocalMovies, MdStar } from "react-icons/md";
 
 import { TmdbContext } from "../../providers/context";
 import { useHistory } from "react-router-dom";
@@ -18,7 +18,7 @@ const Home = () => {
     load,
     trend,
     movies,
-    tvSeries,
+    topRated,
     getSession,
   } = useContext(TmdbContext);
 
@@ -82,15 +82,15 @@ const Home = () => {
         />
         <SectionHome
           load={load}
-          title="Filmes"
+          title="Mais Populares"
           trend={movies}
           icon={MdLocalMovies}
         />
         <SectionHome
           load={load}
-          title="Series"
-          trend={tvSeries}
-          icon={MdMovie}
+          title="Mais Votados"
+          trend={topRated}
+          icon={MdStar}
         />
       </VStack>
     </Flex>

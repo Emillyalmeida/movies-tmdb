@@ -17,7 +17,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
 
   const [trend, setTrend] = useState<ItemI[] | []>([]);
   const [movies, setMovies] = useState<ItemI[] | []>([]);
-  const [tvSeries, setTvSeries] = useState<ItemI[] | []>([]);
+  const [topRated, setTopRated] = useState<ItemI[] | []>([]);
   const [resultSearch, setResult] = useState<ItemI[] | []>([]);
   const [infoList, setInfoList] = useState<ListDetails>({} as ListDetails);
 
@@ -182,7 +182,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
     setLoad(true);
     GetTrending();
     PopularMovies();
-    PopularTvSeries();
+    GetTopRated();
     setLoad(false);
   };
 
@@ -202,15 +202,15 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
       });
   };
 
-  const PopularTvSeries = () => {
+  const GetTopRated = () => {
     api
       .get(
-        `https://api.themoviedb.org/3/tv/popular?api_key=${process.env
+        `https://api.themoviedb.org/3/movie/top_rated?api_key=${process.env
           .REACT_APP_API_KEY!}&language=pt-BR&page=1`
       )
       .then((res) => {
         console.log(res.data);
-        setTvSeries(res.data.results);
+        setTopRated(res.data.results);
         return;
       })
       .catch((err) => {
@@ -296,7 +296,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
         load,
         trend,
         movies,
-        tvSeries,
+        topRated,
         SearchItem,
         resultSearch,
         getSession,

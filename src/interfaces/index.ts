@@ -31,7 +31,7 @@ export interface PropsContext {
   AllListsHome: () => void;
   trend: ItemI[];
   movies: ItemI[];
-  tvSeries: ItemI[];
+  topRated: ItemI[];
   SearchItem: (query: string) => void;
   resultSearch: ItemI[];
   getSession: boolean;
