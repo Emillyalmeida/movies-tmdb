@@ -1,6 +1,6 @@
 # TMDB - Movies
 
-Esse projeto é uma aplicação que consome a API do TMDB para as requisições ,e teve como base o desafio 4 de mentoria do [João Lira](https://github.com/lira1705).Na tela inicial mostrar as têndencias do dia, e os filmes e séries mais populares no momento. É possível também criar listas e adicionar filmes as listas, visulizar os items presentes e remove -los.
+Esse projeto é uma aplicação que consome a API do TMDB para as requisições ,e teve como base o desafio 4 de mentoria do [João Lira](https://github.com/lira1705).Na tela inicial mostrar as têndencias do dia, e os filmes mais populares e mais votados no momento.Contém uma feature de pesquisa que mostra os filmes relacionados. Além disso, é possível também criar listas e adicionar filmes as listas, visulizar os items presentes e remove -los.
 
 ## Bibliotecas
 
