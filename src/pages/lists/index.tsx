@@ -19,6 +19,8 @@ import Header from "../../components/header";
 import SkeletonCard from "../../components/skeleton";
 import { TmdbContext } from "../../providers/context";
 
+import { ItemI } from "../../interfaces";
+
 interface typeParams {
   id: string;
 }
@@ -89,7 +91,7 @@ const PageList = () => {
               ))}
             </>
           ) : (
-            infoList.items.map((item: { id: any }) => (
+            infoList.items.map((item: ItemI) => (
               <Card list={id} key={item.id} item={item} />
             ))
           )}

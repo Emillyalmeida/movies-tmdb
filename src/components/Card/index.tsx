@@ -22,9 +22,10 @@ import { useContext } from "react";
 import { TmdbContext } from "../../providers/context";
 import { AddIcon } from "@chakra-ui/icons";
 import ModalCreate from "../ModalCreateList";
+import { ItemI } from "../../interfaces";
 
 interface props {
-  item: any;
+  item: ItemI;
   list?: string;
 }
 

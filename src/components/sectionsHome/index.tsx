@@ -2,11 +2,12 @@ import { Heading, HStack, VStack } from "@chakra-ui/react";
 import { IconType } from "react-icons/lib/cjs/iconBase";
 import Card from "../Card";
 import SkeletonCard from "../skeleton";
+import { ItemI } from "../../interfaces";
 
 interface Props {
   load: boolean;
   title: string;
-  trend: any[];
+  trend: ItemI[];
   icon: IconType;
 }
 
