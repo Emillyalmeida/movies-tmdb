@@ -304,6 +304,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
         isFavorites,
         AddFavorites,
         RemoveFavorites,
+        favorites,
       }}
     >
       {children}

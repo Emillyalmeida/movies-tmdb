@@ -39,4 +39,5 @@ export interface PropsContext {
   isFavorites: (id: number) => boolean;
   AddFavorites: (id: number, item: ItemI) => void;
   RemoveFavorites: (id: number) => void;
+  favorites: ItemI[];
 }
