@@ -10,7 +10,10 @@ interface TmdbProviderProps {
 }
 
 const TmdbProvider = ({ children }: TmdbProviderProps) => {
-  const [lists, setLists] = useState<list[] | []>([]);
+  const [lists, setLists] = useState<list[] | []>(() => {
+    const existList = localStorage.getItem("@moviesTMDB/list");
+    return existList ? JSON.parse(existList) : [];
+  });
   const [sessionId, setSectionId] = useState("");
 
   const [load, setLoad] = useState(true);
@@ -21,7 +24,10 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
   const [resultSearch, setResult] = useState<ItemI[] | []>([]);
   const [infoList, setInfoList] = useState<ListDetails>({} as ListDetails);
 
-  const [favorites, setFavorites] = useState<ItemI[]>([]);
+  const [favorites, setFavorites] = useState<ItemI[]>(() => {
+    const existFavorites = localStorage.getItem("@moviesTMDB/favorites");
+    return existFavorites ? JSON.parse(existFavorites) : [];
+  });
 
   const [getSession, setGeatSession] = useState(false);
 
@@ -86,6 +92,10 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
           description: description,
         };
         setLists([...lists, InfoList]);
+        localStorage.setItem(
+          "@moviesTMDB/list",
+          JSON.stringify([...lists, InfoList])
+        );
         toast({
           title: `Lista ${nameList} criada`,
           status: "success",
@@ -95,7 +105,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
       })
       .catch((err) => {
         toast({
-          title: `Erro ao criar a list`,
+          title: `Ops, Houve um erro! Recarregue a pagina`,
           status: "error",
           position: "top-left",
           isClosable: true,
@@ -263,6 +273,10 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
 
     if (!isExist) {
       setFavorites([...favorites, item]);
+      localStorage.setItem(
+        "@moviesTMDB/favorites",
+        JSON.stringify([...favorites, item])
+      );
       toast({
         title: `Item adicionado aos Favoritos`,
         status: "success",
@@ -275,6 +289,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
   const RemoveFavorites = (id: number) => {
     const filter = favorites.filter((item) => item.id !== id);
     setFavorites(filter);
+    localStorage.setItem("@moviesTMDB/favorites", JSON.stringify(filter));
     toast({
       title: `Removido dos Favoritos`,
       status: "error",

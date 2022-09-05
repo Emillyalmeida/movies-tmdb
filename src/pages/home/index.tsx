@@ -1,4 +1,12 @@
-import { Button, Flex, Heading, Input, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Heading,
+  Input,
+  Link,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { useToast } from "@chakra-ui/react";
 
 import { useContext, useEffect, useState } from "react";
@@ -11,6 +19,7 @@ import { MdLocalMovies, MdStar } from "react-icons/md";
 
 import { TmdbContext } from "../../providers/context";
 import { useHistory } from "react-router-dom";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 const Home = () => {
   const {
@@ -90,7 +99,7 @@ const Home = () => {
           </Button>
         </Flex>
       </Flex>
-      <VStack spacing={3} bg="gray.100">
+      <VStack spacing={3}>
         <SectionHome
           load={load}
           title="Tendências"
@@ -109,6 +118,31 @@ const Home = () => {
           trend={topRated}
           icon={MdStar}
         />
+      </VStack>
+      <VStack bg="gray.800" color="yellow.700" mt={6} py={4} spacing={3}>
+        <Text fontSize="2xl">Criado por Emilly Almeida</Text>
+        <Flex gap="20px">
+          <Link
+            href="https://github.com/Emillyalmeida/"
+            target={"_blank"}
+            rel="noreferrer"
+            _hover={{
+              color: "yellow.600",
+            }}
+          >
+            <FaGithub fontSize="2rem" />
+          </Link>
+          <Link
+            href="https://www.linkedin.com/in/emilly-almeida-front-end/"
+            target={"_blank"}
+            rel="noreferrer"
+            _hover={{
+              color: "yellow.600",
+            }}
+          >
+            <FaLinkedin fontSize="2rem" />
+          </Link>
+        </Flex>
       </VStack>
     </Flex>
   );
