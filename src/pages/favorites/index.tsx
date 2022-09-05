@@ -9,8 +9,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 
-import { useContext, useEffect } from "react";
-import { MdInfo } from "react-icons/md";
+import { useContext } from "react";
 import { FaHeart, FaHeartBroken } from "react-icons/fa";
 import { useHistory } from "react-router-dom";
 import Card from "../../components/Card";

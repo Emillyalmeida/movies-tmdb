@@ -125,7 +125,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
         body
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         toast({
           title: `Item adicionado a lista`,
           status: "success",
@@ -147,7 +147,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
     api
       .get(`list/${listId}?api_key=${process.env.REACT_APP_API_KEY!}`)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setInfoList(res.data);
         return res.data;
       })
@@ -168,7 +168,7 @@ const TmdbProvider = ({ children }: TmdbProviderProps) => {
         body
       )
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         toast({
           title: `Item removido da lista`,
           status: "success",
