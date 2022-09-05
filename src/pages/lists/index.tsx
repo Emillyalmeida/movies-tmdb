@@ -104,8 +104,6 @@ const PageList = () => {
 
             <Button
               rightIcon={<AddIcon />}
-              color="gray.700"
-              borderColor="gray.700"
               variant="outline"
               _hover={{ bg: "yellow.700" }}
               onClick={() => history.push("/")}

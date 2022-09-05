@@ -93,7 +93,23 @@ const Search = () => {
           />
         </Flex>
       </Flex>
-      {resultSearch.length < 1 ? (
+      {loading ? (
+        <Grid
+          w="100%"
+          templateColumns="repeat(auto-fill, minmax(200px,220px))"
+          justifyContent="center"
+          alignItems="center"
+          gap={10}
+          p="8"
+          mt="4"
+        >
+          <>
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((key) => (
+              <SkeletonCard key={key} />
+            ))}
+          </>
+        </Grid>
+      ) : resultSearch.length < 1 ? (
         <Center pt={8}>
           <VStack
             alignItems="center"
@@ -118,15 +134,9 @@ const Search = () => {
           p="8"
           mt="4"
         >
-          {loading ? (
-            <>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((key) => (
-                <SkeletonCard key={key} />
-              ))}
-            </>
-          ) : (
-            resultSearch.map((item) => <Card key={item.id} item={item} />)
-          )}
+          {resultSearch.map((item) => (
+            <Card key={item.id} item={item} />
+          ))}
         </Grid>
       )}
     </Flex>

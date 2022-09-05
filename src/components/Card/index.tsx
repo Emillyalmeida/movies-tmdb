@@ -56,6 +56,7 @@ const Card = ({ item, list }: props) => {
         rounded="lg"
         _hover={{ transform: "translateY(-10px)", borderColor: "gray.100" }}
         cursor="pointer"
+        color="gray.900"
       >
         <Image
           src={`https://image.tmdb.org/t/p/w200${item.poster_path}`}
