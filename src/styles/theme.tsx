@@ -37,8 +37,14 @@ export const theme = extendTheme({
     "9xl": "6.8rem",
     "10xl": "8rem",
   },
+  initialColorMode: "light",
+  useSystemColorMode: false,
   styles: {
-    global: {
+    dark: {
+      bg: "gray.700",
+      color: "whiteAlpha.900",
+    },
+    light: {
       bg: "white",
       color: "gray.900",
     },

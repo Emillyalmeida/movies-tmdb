@@ -5,6 +5,8 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import AppProvider from "./providers";
+import { ColorModeScript } from "@chakra-ui/react";
+import theme from "./styles/theme";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -13,6 +15,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <AppProvider>
+        <ColorModeScript initialColorMode={theme.initialColorMode} />
         <App />
       </AppProvider>
     </BrowserRouter>

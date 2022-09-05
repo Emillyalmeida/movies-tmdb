@@ -10,10 +10,11 @@ import {
   MenuDivider,
   useDisclosure,
   IconButton,
+  useColorMode,
 } from "@chakra-ui/react";
 
 import { AddIcon, ChevronDownIcon } from "@chakra-ui/icons";
-import { FaHeart } from "react-icons/fa";
+import { FaHeart, FaMoon, FaSun } from "react-icons/fa";
 import { useContext } from "react";
 import { TmdbContext } from "../../providers/context";
 
@@ -32,6 +33,8 @@ const Header = () => {
 
   const history = useHistory();
 
+  const { colorMode, toggleColorMode } = useColorMode();
+
   return (
     <>
       <ModalCreate isOpen={isOpenModal} onClose={onCloseModal} />
@@ -45,22 +48,34 @@ const Header = () => {
         justifyContent="space-between"
       >
         <Heading
-          ml="3"
-          size="3xl"
+          ml={["0", "3"]}
+          size={["2xl", "3xl"]}
           bgGradient="linear(to-t, #fff350, #ffea44, #ffe139, #ffd72c, #ffce1f, #fac618, #f6bd0f, #f1b505, #e6ac04, #dca302, #d19a01, #c79100);"
           fontWeight="700"
           onClick={() => history.push("/")}
           cursor="pointer"
+          color="gray.800"
         >
           TMDB
         </Heading>
-        <HStack spacing={6}>
+        <HStack spacing={3}>
+          <IconButton
+            variant="ghost"
+            color="yellow.700"
+            aria-label="togle theme"
+            icon={colorMode === "light" ? <FaSun /> : <FaMoon />}
+            fontSize={["1.5rem", "2rem"]}
+            _hover={{
+              color: "yellow.600",
+            }}
+            onClick={toggleColorMode}
+          />
           <IconButton
             variant="ghost"
             color="yellow.700"
             aria-label="favoritos"
             icon={<FaHeart />}
-            fontSize="2rem"
+            fontSize={["1.5rem", "2rem"]}
             _hover={{
               color: "yellow.600",
             }}
@@ -118,6 +133,7 @@ const Header = () => {
               variant="outline"
               _hover={{ bg: "gray.500" }}
               onClick={onOpenModal}
+              w={["120px", "140px"]}
             >
               Criar Lista
             </Button>
